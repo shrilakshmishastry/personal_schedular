@@ -1,8 +1,8 @@
 class UserInfo {
-  String? name;
+  String? password;
   String? email;
   DateTime? joinedDate;
-  UserInfo({this.name = "shri", this.email, this.joinedDate});
+  UserInfo({this.password, this.email, this.joinedDate});
 
   static UserInfo fromJson(Map<String, dynamic> json) {
     print("hh");
@@ -10,12 +10,12 @@ class UserInfo {
         ? null
         : DateTime.parse(json["joinedDate"]);
     print(json["joinedDate"] == "null");
-    return UserInfo(name: json["name"], email: json["email"], joinedDate: date);
+    return UserInfo(password: json["password"], email: json["email"], joinedDate: date);
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'name': name,
+      'password': password,
       'email': email,
       'joinedDate': joinedDate == null ? null : joinedDate.toString(),
     };

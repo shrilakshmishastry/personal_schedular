@@ -23,7 +23,7 @@ class EventRemoveAction {
   EventRemoveAction(this.event);
 }
 
-Future<void> removeEventFromList(Store<AppState> state, String title) async {
+Future<void> removeEventFromList(Store<AppState> state, String? title) async {
   SchedularState newState = state.state.appState;
   dynamic eList;
   for (int i = 0; i < newState.events!.length; i++) {
@@ -33,4 +33,24 @@ Future<void> removeEventFromList(Store<AppState> state, String title) async {
   }
   newState.events?.removeAt(eList);
   await state.dispatch(EventRemoveAction(newState.events));
+}
+
+@immutable
+class EventUpdateAction {
+  final List<EventInfo>? event;
+  EventUpdateAction(this.event);
+}
+
+Future<void> updateEventFromList(
+    Store<AppState> state, EventInfo action) async {
+  SchedularState newState = state.state.appState;
+  dynamic eList;
+  for (int i = 0; i < newState.events!.length; i++) {
+    if (newState.events?[i].title == action.title) {
+      eList = i;
+    }
+  }
+  newState.events?[eList] = action;
+
+  await state.dispatch(EventUpdateAction(newState.events));
 }
