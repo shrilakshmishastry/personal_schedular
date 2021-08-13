@@ -38,171 +38,181 @@ class Home extends StatelessWidget {
     }
     dynamic height = setHeight(context);
     dynamic width = setWidth(context);
-    return Column(children: [
-      Expanded(
-          child: ListView(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Scaffold(
+      body: Container(
+        color: Colors.white,
+        padding: EdgeInsets.only(
+            top: height * 0.04, left: width * 0.05, right: width * 0.05),
+        child: Column(children: [
+          Expanded(
+              child: ListView(
             children: [
-              Text(
-                "Schedules",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline1
-                    ?.copyWith(color: Colors.black),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Schedules",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline1
+                        ?.copyWith(color: Colors.black),
+                  ),
+                  CircleAvatar(
+                    backgroundColor: ColorsSchedular.primaryLight1,
+                    child: Text(
+                      Redux.store.state.appState.userInfo!.email![0].toString(),
+                      style: TextStyle(color: ColorsSchedular.primary),
+                    ),
+                  ),
+                ],
               ),
-              CircleAvatar(
-                backgroundColor: ColorsSchedular.primaryLight1,
-                child: Text(
-                  Redux.store.state.appState.userInfo!.email![0].toString(),
-                  style: TextStyle(color: ColorsSchedular.primary),
-                ),
+              SizedBox(
+                height: height * 0.04,
+              ),
+              StoreConnector<AppState, List<EventInfo>?>(
+                converter: (store) => store.state.appState.events,
+                builder: (context, events) {
+                  List eTodayList = [];
+                  List eUpcomingList = [];
+                  if (events != null) {
+                    for (int i = 0; i < events.length; i++) {
+                      dynamic value = events[i]
+                          .dateTime
+                          .toString()
+                          .substring(0, 10)
+                          .compareTo(
+                              DateTime.now().toString().substring(0, 10));
+                      if (value == 1) {
+                        eUpcomingList.add(events[i]);
+                      }
+                      if (value == 0) {
+                        eTodayList.add(events[i]);
+                      }
+                    }
+                  }
+                  return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: width * 0.02),
+                          child: Text(
+                            "Today ," +
+                                DateFormat.yMMMMEEEEd().format(DateTime.now()),
+                            style: headingStyle,
+                          ),
+                        ),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
+                        Column(
+                            children: eTodayList.length > 0
+                                ? eTodayList.map((e) {
+                                    return ListTileSchedule(
+                                        e,
+                                        _bgCardColor[eTodayList.indexOf(e) % 5],
+                                        _borderCardColor[
+                                            eTodayList.indexOf(e) % 5]);
+                                  }).toList()
+                                : [
+                                    Center(
+                                        child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: height * 0.05,
+                                        ),
+                                        Icon(
+                                          Icons.event_busy,
+                                          size: height * 0.09,
+                                          color: ColorsSchedular.cement,
+                                        ),
+                                        SizedBox(
+                                          height: height * 0.04,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: width * 0.04),
+                                          child: TextButton(
+                                              onPressed: () {
+                                                print("tapped");
+                                              },
+                                              child: Text(
+                                                "No Activity ",
+                                                style: TextStyle(
+                                                    color:
+                                                        ColorsSchedular.cement),
+                                              )),
+                                        ),
+                                        SizedBox(
+                                          height: height * 0.05,
+                                        ),
+                                      ],
+                                    ))
+                                  ]),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: width * 0.02),
+                          child: Text(
+                            "Upcoming Events",
+                            style: headingStyle,
+                          ),
+                        ),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
+                        Column(
+                            children: eUpcomingList.length > 0
+                                ? eUpcomingList.map((e) {
+                                    print(e);
+                                    return ListTileSchedule(
+                                        e,
+                                        _bgCardColor[eTodayList.indexOf(e) % 5],
+                                        _borderCardColor[
+                                            eTodayList.indexOf(e) % 5]);
+                                  }).toList()
+                                : [
+                                    Center(
+                                        child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: height * 0.05,
+                                        ),
+                                        Icon(
+                                          Icons.event_busy,
+                                          size: height * 0.09,
+                                          color: ColorsSchedular.cement,
+                                        ),
+                                        SizedBox(
+                                          height: height * 0.04,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: width * 0.04),
+                                          child: TextButton(
+                                              onPressed: () {
+                                                print("tapped");
+                                              },
+                                              child: Text(
+                                                "No Activity ",
+                                                style: TextStyle(
+                                                    color:
+                                                        ColorsSchedular.cement),
+                                              )),
+                                        ),
+                                        SizedBox(
+                                          height: height * 0.05,
+                                        ),
+                                      ],
+                                    ))
+                                  ]),
+                      ]);
+                },
               ),
             ],
-          ),
-          SizedBox(
-            height: height * 0.04,
-          ),
-          StoreConnector<AppState, List<EventInfo>?>(
-            converter: (store) => store.state.appState.events,
-            builder: (context, events) {
-              List eTodayList = [];
-              List eUpcomingList = [];
-              if (events != null) {
-                for (int i = 0; i < events.length; i++) {
-                  dynamic value = events[i]
-                      .dateTime
-                      .toString()
-                      .substring(0, 10)
-                      .compareTo(DateTime.now().toString().substring(0, 10));
-                  if (value == 1) {
-                    eUpcomingList.add(events[i]);
-                  }
-                  if (value == 0) {
-                    eTodayList.add(events[i]);
-                  }
-                }
-              }
-              return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: width * 0.02),
-                      child: Text(
-                        "Today ," +
-                            DateFormat.yMMMMEEEEd().format(DateTime.now()),
-                        style: headingStyle,
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    Column(
-                        children: eTodayList.length > 0
-                            ? eTodayList.map((e) {
-                                return ListTileSchedule(
-                                    e,
-                                    _bgCardColor[eTodayList.indexOf(e) % 5],
-                                    _borderCardColor[
-                                        eTodayList.indexOf(e) % 5]);
-                              }).toList()
-                            : [
-                                Center(
-                                    child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: height * 0.05,
-                                    ),
-                                    Icon(
-                                      Icons.event_busy,
-                                      size: height * 0.09,
-                                      color: ColorsSchedular.cement,
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.04,
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(left: width * 0.04),
-                                      child: TextButton(
-                                          onPressed: () {
-                                            print("tapped");
-                                          },
-                                          child: Text(
-                                            "No Activity ",
-                                            style: TextStyle(
-                                                color: ColorsSchedular.cement),
-                                          )),
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.05,
-                                    ),
-                                  ],
-                                ))
-                              ]),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: width * 0.02),
-                      child: Text(
-                        "Upcoming Events",
-                        style: headingStyle,
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    Column(
-                        children: eUpcomingList.length > 0
-                            ? eUpcomingList.map((e) {
-                                print(e);
-                                return ListTileSchedule(
-                                    e,
-                                    _bgCardColor[eTodayList.indexOf(e) % 5],
-                                    _borderCardColor[
-                                        eTodayList.indexOf(e) % 5]);
-                              }).toList()
-                            : [
-                                Center(
-                                    child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: height * 0.05,
-                                    ),
-                                    Icon(
-                                      Icons.event_busy,
-                                      size: height * 0.09,
-                                      color: ColorsSchedular.cement,
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.04,
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(left: width * 0.04),
-                                      child: TextButton(
-                                          onPressed: () {
-                                            print("tapped");
-                                          },
-                                          child: Text(
-                                            "No Activity ",
-                                            style: TextStyle(
-                                                color: ColorsSchedular.cement),
-                                          )),
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.05,
-                                    ),
-                                  ],
-                                ))
-                              ]),
-                  ]);
-            },
-          ),
-        ],
-      )),
-    ]);
+          )),
+        ]),
+      ),
+    );
   }
 }

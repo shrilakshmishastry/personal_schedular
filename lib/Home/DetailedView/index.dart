@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:personal_schedular/AddEvent/addEvent.dart';
 import 'package:personal_schedular/Home/DetailedView/detailedView.dart';
 import 'package:personal_schedular/config/Theme/colors.dart';
 import 'package:personal_schedular/redux/actions/EventAction.dart';
@@ -49,7 +51,19 @@ class DetailedViewIndex extends StatelessWidget {
                           ));
                 }
                 if (value == "Edit") {
-                  print("edit");
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => new AddEvent(
+                                title: _eventInfo.title,
+                                description: _eventInfo.description,
+                                address: _eventInfo.address,
+                                date: _eventInfo.dateTime,
+                                time: _eventInfo.time,
+                                meetLink: _eventInfo.meetLink,
+                                newOrUpdate: "Update",
+                              )));
                 }
               },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[

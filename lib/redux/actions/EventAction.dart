@@ -42,11 +42,11 @@ class EventUpdateAction {
 }
 
 Future<void> updateEventFromList(
-    Store<AppState> state, EventInfo action) async {
+    Store<AppState> state, EventInfo action,String title) async {
   SchedularState newState = state.state.appState;
   dynamic eList;
   for (int i = 0; i < newState.events!.length; i++) {
-    if (newState.events?[i].title == action.title) {
+    if (newState.events?[i].title == title) {
       eList = i;
     }
   }

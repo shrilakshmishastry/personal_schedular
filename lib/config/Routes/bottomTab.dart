@@ -30,9 +30,6 @@ class _BottomTabState extends State<BottomTabSchedular> {
     return SafeArea(
         child: Scaffold(
       body: Container(
-        color: Colors.white,
-        padding: EdgeInsets.only(
-            top: height * 0.04, left: width * 0.05, right: width * 0.05),
         child: _widgetsAfterLogin[_selectdIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(

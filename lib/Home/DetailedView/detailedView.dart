@@ -76,7 +76,7 @@ class DetailedView extends StatelessWidget {
 
               _eventInfo.meetLink!.isEmpty || _eventInfo.meetLink == null
                   ? ListTileDetail(Icons.room, _eventInfo.address.toString(),
-                      16.0, Colors.black, Colors.black, ColorsSchedular.primary)
+                      16.0, Colors.black, Color(0xff40E0D0), Color(0xffD6FCF8))
                   : ListTileDetail(
                       Icons.call_to_action,
                       _eventInfo.meetLink.toString(),
