@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.personal_schedular">
    <application
-        android:label="personal_schedular"
+        android:label="Valise"
         android:icon="@mipmap/ic_launcher"
          android:requestLegacyExternalStorage="true"
         >

@@ -14,8 +14,9 @@ class ListTileDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     double width = setWidth(context);
-    double height = setHeight(context);
+
     return ListTile(
       contentPadding: EdgeInsets.only(left: width * 0.09, right: width * 0.05),
       leading: Container(

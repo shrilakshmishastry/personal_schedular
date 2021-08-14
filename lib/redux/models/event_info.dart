@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-
 class EventInfo {
   String? title;
   String? description;
   DateTime? dateTime;
   String? time;
+  String? useremail;
   String? meetLink;
   String? address;
 
@@ -14,6 +13,7 @@ class EventInfo {
       this.dateTime,
       this.time,
       this.meetLink,
+      this.useremail,
       this.address});
 
   static EventInfo fromJson(Map<String, dynamic>? json) {
@@ -26,6 +26,7 @@ class EventInfo {
       time: json?["joinedTime"],
       meetLink: json?["meetLink"],
       address: json?["address"],
+      useremail: json?["useremail"]
     );
   }
 
@@ -41,7 +42,8 @@ class EventInfo {
       "dateTime": dateTime.toString(),
       "joinedTime": time,
       "meetLink": meetLink,
-      "address": address
+      "address": address,
+      "useremail" : useremail,
     };
   }
 }

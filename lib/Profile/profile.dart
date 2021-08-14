@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:personal_schedular/Home/home.dart';
+import 'package:personal_schedular/Profile/PastEvent/index.dart';
 import 'package:personal_schedular/config/Theme/colors.dart';
 import 'package:personal_schedular/config/Theme/sizes_helper.dart';
 import 'package:personal_schedular/redux/actions/profile_add.dart';
 import 'package:personal_schedular/redux/store.dart';
 
 class Profile extends StatelessWidget {
+  final Function _handleTap;
+  Profile(this._handleTap);
+
   @override
   Widget build(BuildContext context) {
     double height = setHeight(context);
@@ -88,12 +92,7 @@ class Profile extends StatelessWidget {
               // upcoming events link
 
               ListTile(
-                onTap: () {
-                  Navigator.push(context,
-                      new MaterialPageRoute(builder: (BuildContext context) {
-                    return Home();
-                  }));
-                },
+                onTap: () => _handleTap(),
                 horizontalTitleGap: width * 0.1,
                 leading: Container(
                   padding: EdgeInsets.all(width * 0.02),
@@ -108,12 +107,7 @@ class Profile extends StatelessWidget {
                 ),
                 title: Text("Upcoming"),
                 trailing: TextButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        new MaterialPageRoute(builder: (BuildContext context) {
-                      return Home();
-                    }));
-                  },
+                  onPressed: () => _handleTap(),
                   child: Container(
                     padding: EdgeInsets.only(top: height * 0.01),
                     child: Icon(
@@ -132,11 +126,10 @@ class Profile extends StatelessWidget {
 
               ListTile(
                 onTap: () {
-                  print("past events");
-                  // Navigator.push(context,
-                  //     new MaterialPageRoute(builder: (BuildContext context) {
-                  //   return Home();
-                  // }));
+                  Navigator.push(context,
+                      new MaterialPageRoute(builder: (BuildContext context) {
+                    return PastEventIndex();
+                  }));
                 },
                 horizontalTitleGap: width * 0.1,
                 leading: Container(
@@ -153,7 +146,10 @@ class Profile extends StatelessWidget {
                 title: Text("Past Events"),
                 trailing: TextButton(
                   onPressed: () {
-                    print("Past events Pressed");
+                    Navigator.push(context,
+                        new MaterialPageRoute(builder: (BuildContext context) {
+                      return PastEventIndex();
+                    }));
                   },
                   child: Container(
                     padding: EdgeInsets.only(top: height * 0.01),
@@ -172,9 +168,34 @@ class Profile extends StatelessWidget {
               // logout button
 
               TextButton(
-                  onPressed: () {
-                    Redux.store.dispatch(ProfileRemoveAction());
-                  },
+                  onPressed: () => showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                            title: const Text("Logout"),
+                            content: const Text(
+                                "Are you sure , you want to logout?"),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    "No",
+                                    style: TextStyle(
+                                        color: ColorsSchedular.primary),
+                                  )),
+                              TextButton(
+                                  onPressed: () {
+                                    Redux.store.dispatch(ProfileRemoveAction());
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    "Yes",
+                                    style: TextStyle(
+                                        color: ColorsSchedular.primary),
+                                  ))
+                            ],
+                          )),
                   child: Container(
                     padding: EdgeInsets.all(width * 0.02),
                     color: ColorsSchedular.primaryLight1,

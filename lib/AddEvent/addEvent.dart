@@ -410,6 +410,8 @@ class _AddEventState extends State<AddEvent> {
                                       address: _addressController.text,
                                       description: _descriptionController.text,
                                       dateTime: _date,
+                                      useremail: Redux
+                                          .store.state.appState.userInfo?.email,
                                     ),
                                     widget.title.toString(),
                                   ));
@@ -425,6 +427,8 @@ class _AddEventState extends State<AddEvent> {
                                         description:
                                             _descriptionController.text,
                                         dateTime: _date,
+                                        useremail: Redux.store.state.appState
+                                            .userInfo?.email,
                                       )));
                                   _timeController.clear();
                                   _titleController.clear();

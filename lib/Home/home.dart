@@ -47,6 +47,8 @@ class Home extends StatelessWidget {
           Expanded(
               child: ListView(
             children: [
+              // title ans avatar
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -69,9 +71,12 @@ class Home extends StatelessWidget {
               SizedBox(
                 height: height * 0.04,
               ),
+
               StoreConnector<AppState, List<EventInfo>?>(
                 converter: (store) => store.state.appState.events,
                 builder: (context, events) {
+                  String? email = Redux.store.state.appState.userInfo?.email;
+                  print(email);
                   List eTodayList = [];
                   List eUpcomingList = [];
                   if (events != null) {
@@ -82,10 +87,10 @@ class Home extends StatelessWidget {
                           .substring(0, 10)
                           .compareTo(
                               DateTime.now().toString().substring(0, 10));
-                      if (value == 1) {
+                      if (value == 1 && events[i].useremail == email) {
                         eUpcomingList.add(events[i]);
                       }
-                      if (value == 0) {
+                      if (value == 0 && events[i].useremail == email) {
                         eTodayList.add(events[i]);
                       }
                     }
@@ -104,6 +109,9 @@ class Home extends StatelessWidget {
                         SizedBox(
                           height: height * 0.02,
                         ),
+
+                        // today's event list
+
                         Column(
                             children: eTodayList.length > 0
                                 ? eTodayList.map((e) {
@@ -161,15 +169,19 @@ class Home extends StatelessWidget {
                         SizedBox(
                           height: height * 0.02,
                         ),
+
+                        // upcoming event list
+
                         Column(
                             children: eUpcomingList.length > 0
                                 ? eUpcomingList.map((e) {
                                     print(e);
                                     return ListTileSchedule(
                                         e,
-                                        _bgCardColor[eTodayList.indexOf(e) % 5],
+                                        _bgCardColor[
+                                            eUpcomingList.indexOf(e) % 5],
                                         _borderCardColor[
-                                            eTodayList.indexOf(e) % 5]);
+                                            eUpcomingList.indexOf(e) % 5]);
                                   }).toList()
                                 : [
                                     Center(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:personal_schedular/AddEvent/addEvent.dart';
 import 'package:personal_schedular/Home/DetailedView/detailedView.dart';
 import 'package:personal_schedular/config/Theme/colors.dart';

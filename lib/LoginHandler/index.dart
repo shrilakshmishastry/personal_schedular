@@ -60,6 +60,7 @@ class LoginHandler extends StatelessWidget {
                         ),
                         TextFormField(
                           autofocus: true,
+                          textInputAction: TextInputAction.next,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) {
                             if ((value == null || value.isEmpty) ||
