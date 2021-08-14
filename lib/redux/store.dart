@@ -30,6 +30,10 @@ AppState appReducer(AppState store, dynamic action) {
     final nextState = eventRemoveReducer(store.appState, action);
     return store.copyWith(nextState);
   }
+  if (action is EventUpdateAction) {
+    final nextState = eventUpdateReducer(store.appState, action);
+    return store.copyWith(nextState);
+  }
   return store;
 }
 

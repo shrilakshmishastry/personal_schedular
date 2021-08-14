@@ -3,14 +3,18 @@ import 'package:personal_schedular/redux/schedular_state.dart';
 
 eventAddReducer(SchedularState prevState, EventAddAction action) {
   return prevState.copyWith(
-      userInfo: null,
-      events: action.event,
-      );
+    userInfo: null,
+    events: action.event,
+  );
 }
 
-eventRemoveReducer(SchedularState prevState,EventRemoveAction action) {
+eventRemoveReducer(SchedularState prevState, EventRemoveAction action) {
   return prevState.copyWith(
-      userInfo: null,
-      events: action.event,
-     );
+    userInfo: null,
+    events: action.event,
+  );
+}
+
+eventUpdateReducer(SchedularState prevState, EventUpdateAction action) {
+  return prevState.copyWith(userInfo: null, events: action.event);
 }

@@ -1,10 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:personal_schedular/redux/actions/EventAction.dart';
-import 'package:personal_schedular/redux/actions/profile_add.dart';
-import 'package:personal_schedular/redux/models/event_info.dart';
+import 'package:personal_schedular/config/Routes/bottomTab.dart';
 import 'package:personal_schedular/redux/models/user_info.dart';
+import 'package:personal_schedular/redux/schedular_state.dart';
 import 'package:personal_schedular/redux/store.dart';
+import 'LoginHandler/index.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,179 +17,56 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  // _routeBuilderBeforeLogin() {
+  //   return <String, WidgetBuilder>{
+  //     '/login': (BuildContext context) => new LoginHandler(),
+  //   };
+  // }
+
+  // _routeBuilderAfterLogin() {
+  //   return <String, WidgetBuilder>{
+  //     '/': (BuildContext context) => new BottomTabSchedular(),
+  //   };
+  // }
+
+  ThemeData _themeData = ThemeData(
+    primaryColor: Color(0xff1022d6),
+    primaryColorLight: Color(0xffAAB1F7),
+    accentColor: Color(0xffbbc4d3),
+    primaryColorDark: Color(0xff3f58c4),
+    shadowColor: Color(0xfff8f4f8),
+    fontFamily: 'Lato2OFL',
+    buttonTheme: ButtonThemeData(
+      buttonColor: Colors.amberAccent,
+    ),
+    textTheme: TextTheme(
+        bodyText1: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400),
+        headline1: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+        headline2: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600),
+        button: TextStyle(fontSize: 16.0),
+        caption: TextStyle(fontSize: 14.0)),
+  );
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: StoreProvider<AppState>(
+    print(Redux.store.state.appState.userInfo?.email);
+    return StoreProvider<AppState>(
         store: Redux.store,
-        child: MyHomePage(title: 'Flutter Demo Home Page'),
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            StoreConnector<AppState, UserInfo?>(
-                converter: (store) => store.state.appState.userInfo,
-                builder: (context, userInfo) {
-                  print(userInfo);
-                  return Container(
-                    child: Column(
-                      children: [
-                        Text(userInfo?.name.toString() ?? "hello"),
-                      ],
-                    ),
-                  );
-                }),
-            StoreConnector<AppState, dynamic>(
-              converter: (state) =>
-                  () => state.dispatch(ProfileAddAction(UserInfo(
-                        email: "",
-                        name: "lakshmi",
-                        joinedDate: DateTime.now(),
-                      ))),
-              builder: (context, callMe) {
-                return TextButton(
-                    onPressed: () {
-                      callMe();
-                    },
-                    child: Text("Press me"));
-              },
-            ),
-            StoreConnector<AppState, dynamic>(
-              converter: (state) => () => state.dispatch(ProfileRemoveAction()),
-              builder: (context, callMe) {
-                return TextButton(
-                    onPressed: () {
-                      callMe();
-                    },
-                    child: Text("Remove me"));
-              },
-            ),
-            StoreConnector<AppState, VoidCallback>(
-              converter: (state) => () => state.dispatch(createListOfEvents(
-                  state,
-                  EventInfo(
-                      title: "my blog3",
-                      description: "I am xxgoing to write a blog",
-                      dateTime: DateTime.now()))),
-              builder: (context, callMe) {
-                return TextButton(
-                    onPressed: () {
-                      callMe();
-                    },
-                    child: Text("Press me"));
-              },
-            ),
-            StoreConnector<AppState, List<dynamic>?>(
-              converter: (state) => state.state.appState.events,
-              builder: (context, info) {
-                return Expanded(
-                    child: ListView(
-                  children: info == null
-                      ? [Text("hello")]
-                      : info.map((e) {
-                          return Column(
-                            children: [
-                              Text(e.title.toString()),
-                              StoreConnector<AppState, VoidCallback>(
-                                converter: (state) => () => state.dispatch(
-                                    removeEventFromList(state, e.title)),
-                                builder: (context, callMe) {
-                                  return TextButton(
-                                      onPressed: () {
-                                        callMe();
-                                      },
-                                      child: Text("Remove me"));
-                                },
-                              ),
-                            ],
-                          );
-                        }).toList(),
-                ));
-              },
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        child: StoreConnector<AppState, SchedularState>(
+          converter: (state) => state.state.appState,
+          builder: (context, appState) {
+            return MaterialApp(
+              // routes: appState.userInfo?.email == null
+              //     ? _routeBuilderBeforeLogin()
+              //     : _routeBuilderAfterLogin(),
+              // initialRoute: appState.userInfo?.email == null ? '/login' : '/',
+              home: appState.userInfo?.email == null
+                  ? LoginHandler()
+                  : BottomTabSchedular(),
+              title: 'Flutter Demo',
+              theme: _themeData,
+            );
+          },
+        ));
   }
 }
