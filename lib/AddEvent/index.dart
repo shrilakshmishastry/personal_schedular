@@ -4,7 +4,7 @@ import 'package:personal_schedular/AddEvent/addEvent.dart';
 class AddEventIndex extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SafeArea(
       child: AddEvent(),
     );
   }

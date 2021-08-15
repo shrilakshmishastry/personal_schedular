@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:personal_schedular/AddEvent/addEvent.dart';
 import 'package:personal_schedular/Home/DetailedView/detailedView.dart';
-import 'package:personal_schedular/config/Theme/colors.dart';
 import 'package:personal_schedular/redux/actions/EventAction.dart';
 import 'package:personal_schedular/redux/models/event_info.dart';
 import 'package:personal_schedular/redux/store.dart';
@@ -13,12 +12,16 @@ class DetailedViewIndex extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(_eventInfo);
+    ThemeData theme = Theme.of(context);
+
+    Color iconColor = theme.primaryColorDark;
+    Color iconBg = theme.primaryColorLight;
+
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        backgroundColor: ColorsSchedular.primaryLight1,
-        iconTheme: IconThemeData(color: ColorsSchedular.primary),
+        backgroundColor: iconBg,
+        iconTheme: IconThemeData(color: iconColor),
         elevation: 0,
         automaticallyImplyLeading: true,
         actions: [

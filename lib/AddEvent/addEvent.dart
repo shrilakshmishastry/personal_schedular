@@ -5,7 +5,6 @@ import 'package:personal_schedular/config/Theme/sizes_helper.dart';
 import 'package:intl/intl.dart';
 import 'package:personal_schedular/redux/actions/EventAction.dart';
 import 'package:personal_schedular/redux/models/event_info.dart';
-import 'package:personal_schedular/redux/reducers/EventReducer.dart';
 import 'package:personal_schedular/redux/store.dart';
 
 class AddEvent extends StatefulWidget {
@@ -86,22 +85,10 @@ class _AddEventState extends State<AddEvent> {
   dynamic _time;
   dynamic _date;
 
-  // DateFormat dateFormat = DateFormat("yyyy-MM-dd");
-  final snackBar = SnackBar(
-      backgroundColor: ColorsSchedular.primary,
-      content: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Text(
-          "Yay! That's a success!!",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ]));
-
   // style for create meet
   ButtonStyle _setButtonStyle(BuildContext context) {
     return ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(Color(0xff1022d6)),
+      backgroundColor: MaterialStateProperty.all(ColorsSchedular.primary),
     );
   }
 
@@ -124,16 +111,17 @@ class _AddEventState extends State<AddEvent> {
 // decoration for time and date
 
   InputDecoration _setTimeDateDecoration(
-      BuildContext context, String text, IconData icon, Color color) {
+      BuildContext context, String text, IconData icon, Color? color) {
     return InputDecoration(
       hintText: text,
+      hintStyle: Theme.of(context).textTheme.bodyText1,
       border: OutlineInputBorder(
         borderRadius:
             BorderRadius.all(Radius.circular(setHeight(context) * 0.02)),
         borderSide: BorderSide.none,
       ),
       filled: true,
-      fillColor: Colors.white,
+      fillColor: Theme.of(context).scaffoldBackgroundColor,
       prefixIcon: Icon(
         icon,
         color: color,
@@ -143,14 +131,18 @@ class _AddEventState extends State<AddEvent> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.date.runtimeType);
-
+    final snackBar = SnackBar(
+        backgroundColor: ColorsSchedular.primary,
+        content: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Text("Yay! That's a success!!",
+              style: Theme.of(context).textTheme.bodyText1),
+        ]));
+    ThemeData theme = Theme.of(context);
     dynamic height = setHeight(context);
     dynamic width = setWidth(context);
 
     return Scaffold(
       body: Container(
-        color: Colors.white,
         padding: EdgeInsets.only(
             top: height * 0.04, left: width * 0.05, right: width * 0.05),
         child: ListView(
@@ -160,20 +152,8 @@ class _AddEventState extends State<AddEvent> {
             ),
 
             // title
-            Text(
-              "Create",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline2
-                  ?.copyWith(color: Colors.black),
-            ),
-            Text(
-              "New Meeting",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline2
-                  ?.copyWith(color: Colors.black),
-            ),
+            Text("Add New Todo", style: Theme.of(context).textTheme.headline2),
+
             SizedBox(height: height * 0.05),
 
             // form wrapper
@@ -207,9 +187,11 @@ class _AddEventState extends State<AddEvent> {
                           ColorsSchedular.primaryLight1),
                     ),
 
+                    SizedBox(height: height * 0.05),
                     // date picker
 
                     TextFormField(
+                      style: theme.textTheme.bodyText1,
                       focusNode: date,
                       textInputAction: TextInputAction.next,
                       validator: (value) {
@@ -250,6 +232,7 @@ class _AddEventState extends State<AddEvent> {
                     // time picker
 
                     TextFormField(
+                        style: theme.textTheme.bodyText1,
                         validator: (value) {
                           // print(_time < TimeOfDay.now());
                           // validation add
@@ -444,7 +427,7 @@ class _AddEventState extends State<AddEvent> {
                               widget.newOrUpdate == "Update"
                                   ? "Update Meeting Info"
                                   : "Create Meeting",
-                              style: TextStyle(color: Colors.white),
+                              style: theme.textTheme.bodyText1,
                             )),
                       ),
                     ),

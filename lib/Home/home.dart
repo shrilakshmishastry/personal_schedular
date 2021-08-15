@@ -3,19 +3,20 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 import 'package:personal_schedular/Home/Ui/listTileSchedule.dart';
 import 'package:personal_schedular/config/Theme/colors.dart';
+import 'package:personal_schedular/config/Theme/custom_theme.dart';
 import 'package:personal_schedular/config/Theme/sizes_helper.dart';
 import 'package:personal_schedular/redux/models/event_info.dart';
 import 'package:personal_schedular/redux/store.dart';
 
 class Home extends StatelessWidget {
-  List<Color> _borderCardColor = [
-    Color(0xff40E0D0),
+  List<Color> _borderLightModeCardColor = [
+    Color(0xff0C8078),
     Color(0xff400E0D),
     Color(0xff545C65),
     Color(0xff800000),
     Color(0xff214680)
   ];
-  List<Color> _bgCardColor = [
+  List<Color> _bgLightModeCardColor = [
     Color(0xffD6FCF8),
     Color(0xffDACECE),
     Color(0xffEEF1F4),
@@ -23,24 +24,29 @@ class Home extends StatelessWidget {
     Color(0xffDDE9FE)
   ];
 
-  TextStyle headingStyle = TextStyle(
-    color: ColorsSchedular.dark,
-    fontSize: 14.0,
-    fontWeight: FontWeight.bold,
-  );
-
   List e = [];
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
+    List<Color> _borderCardColor = CustomTheme.isDarkTheme
+        ? _bgLightModeCardColor
+        : _borderLightModeCardColor;
+
+    List<Color> _bgCardColor = CustomTheme.isDarkTheme
+        ? _borderLightModeCardColor
+        : _bgLightModeCardColor;
+
     for (var i = 0; i < 100; i++) {
       e.add(i);
     }
+
     dynamic height = setHeight(context);
     dynamic width = setWidth(context);
+
     return Scaffold(
       body: Container(
-        color: Colors.white,
         padding: EdgeInsets.only(
             top: height * 0.04, left: width * 0.05, right: width * 0.05),
         child: Column(children: [
@@ -53,17 +59,14 @@ class Home extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Schedules",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline1
-                        ?.copyWith(color: Colors.black),
+                    "All Tasks ",
+                    style: theme.textTheme.headline3,
                   ),
                   CircleAvatar(
-                    backgroundColor: ColorsSchedular.primaryLight1,
+                    backgroundColor: theme.primaryColorLight,
                     child: Text(
                       Redux.store.state.appState.userInfo!.email![0].toString(),
-                      style: TextStyle(color: ColorsSchedular.primary),
+                      style: theme.textTheme.bodyText1,
                     ),
                   ),
                 ],
@@ -95,6 +98,9 @@ class Home extends StatelessWidget {
                       }
                     }
                   }
+
+                  // events of today
+
                   return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -103,7 +109,7 @@ class Home extends StatelessWidget {
                           child: Text(
                             "Today ," +
                                 DateFormat.yMMMMEEEEd().format(DateTime.now()),
-                            style: headingStyle,
+                            style: theme.textTheme.headline6,
                           ),
                         ),
                         SizedBox(
@@ -131,25 +137,18 @@ class Home extends StatelessWidget {
                                         Icon(
                                           Icons.event_busy,
                                           size: height * 0.09,
-                                          color: ColorsSchedular.cement,
+                                          color: theme.primaryColorLight,
                                         ),
                                         SizedBox(
                                           height: height * 0.04,
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.only(
-                                              left: width * 0.04),
-                                          child: TextButton(
-                                              onPressed: () {
-                                                print("tapped");
-                                              },
-                                              child: Text(
-                                                "No Activity ",
-                                                style: TextStyle(
-                                                    color:
-                                                        ColorsSchedular.cement),
-                                              )),
-                                        ),
+                                            padding: EdgeInsets.only(
+                                                left: width * 0.04),
+                                            child: Text(
+                                              "No Activity ",
+                                              style: theme.textTheme.headline6,
+                                            )),
                                         SizedBox(
                                           height: height * 0.05,
                                         ),
@@ -163,7 +162,7 @@ class Home extends StatelessWidget {
                           padding: EdgeInsets.only(left: width * 0.02),
                           child: Text(
                             "Upcoming Events",
-                            style: headingStyle,
+                            style: theme.textTheme.headline6,
                           ),
                         ),
                         SizedBox(
@@ -193,7 +192,7 @@ class Home extends StatelessWidget {
                                         Icon(
                                           Icons.event_busy,
                                           size: height * 0.09,
-                                          color: ColorsSchedular.cement,
+                                          color: theme.primaryColorLight,
                                         ),
                                         SizedBox(
                                           height: height * 0.04,
@@ -201,16 +200,10 @@ class Home extends StatelessWidget {
                                         Padding(
                                           padding: EdgeInsets.only(
                                               left: width * 0.04),
-                                          child: TextButton(
-                                              onPressed: () {
-                                                print("tapped");
-                                              },
-                                              child: Text(
-                                                "No Activity ",
-                                                style: TextStyle(
-                                                    color:
-                                                        ColorsSchedular.cement),
-                                              )),
+                                          child: Text(
+                                            "No Activity ",
+                                            style: theme.textTheme.bodyText1,
+                                          ),
                                         ),
                                         SizedBox(
                                           height: height * 0.05,

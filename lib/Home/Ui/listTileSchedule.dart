@@ -14,7 +14,8 @@ class ListTileSchedule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(eventInfo.meetLink == null || eventInfo.meetLink!.isEmpty);
+    ThemeData theme = Theme.of(context);
+
     int _showDate = eventInfo.dateTime
         .toString()
         .substring(0, 10)
@@ -25,9 +26,10 @@ class ListTileSchedule extends StatelessWidget {
         child: InkWell(
           onTap: () {
             Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (BuildContext context)=> new DetailedViewIndex(eventInfo))
-            );
+                context,
+                new MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        new DetailedViewIndex(eventInfo)));
           },
           child: Container(
             decoration: BoxDecoration(
@@ -54,6 +56,7 @@ class ListTileSchedule extends StatelessWidget {
               ]),
               title: Text(
                 eventInfo.title.toString(),
+                style: theme.textTheme.bodyText1,
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,7 +69,10 @@ class ListTileSchedule extends StatelessWidget {
                                   .substring(0, 10)))
                               .toString() +
                           "\t\tat\t"),
-                  Text(eventInfo.time.toString()),
+                  Text(
+                    eventInfo.time.toString(),
+                    style: theme.textTheme.bodyText2,
+                  ),
                   SizedBox(
                     height: height * 0.009,
                   ),
